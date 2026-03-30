@@ -43,6 +43,7 @@ ci_build_scan_url=''
 remote_build_cache_type=''
 remote_build_cache_url=''
 mapping_file=''
+post_clone_script=''
 
 main() {
   if [ "${interactive_mode}" == "on" ]; then

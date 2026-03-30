@@ -38,6 +38,7 @@ extra_args=''
 enable_develocity=''
 develocity_server=''
 interactive_mode=''
+post_clone_script=''
 
 main() {
   if [ "${interactive_mode}" == "on" ]; then

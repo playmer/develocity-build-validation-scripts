@@ -7,6 +7,8 @@ git_checkout_project() {
    else
      git_clone_project "${target_subdir}"
    fi
+
+   git_run_post_clone_script "${target_subdir}"
 }
 
 git_clone_project() {
@@ -71,6 +73,25 @@ git_checkout_commit() {
     fi
 
     git -c advice.detachedHead=false checkout FETCH_HEAD || die "ERROR: Unable to checkout commit ${git_commit_id}"
+  fi
+}
+
+git_run_post_clone_script() {
+  if [ -n "${post_clone_script}" ]; then
+    info "Running post-clone script: ${post_clone_script}"
+    # shellcheck disable=SC2086  # we want $post_clone_script to expand into multiple arguments
+
+    local original_dir
+    if [ -n "${project_dir}" ]; then
+      original_dir="$(pwd)"
+      cd "${project_dir}" > /dev/null 2>&1 || die "ERROR: Subdirectory ${project_dir} (set with --project-dir) does not exist in ${project_name}" "${INVALID_INPUT}"
+    fi
+
+    bash ${post_clone_script} || die "ERROR: Post-clone script failed: ${post_clone_script}"
+
+    if [ -n "${original_dir}" ]; then
+      cd "${original_dir}" > /dev/null 2>&1 || die "ERROR: Unable to return to original directory ${original_dir} after running post-clone script"
+    fi
   fi
 }
 

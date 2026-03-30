@@ -40,6 +40,7 @@ enable_develocity=''
 develocity_server=''
 interactive_mode=''
 mapping_file=''
+post_clone_script=''
 
 main() {
   if [ "${interactive_mode}" == "on" ]; then
